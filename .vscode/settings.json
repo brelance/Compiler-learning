@@ -5,7 +5,12 @@
     "debug.h": "c",
     "common.h": "c",
     "value.h": "c",
-    "vm.h": "c"
+    "vm.h": "c",
+    "compiler.h": "c",
+    "limits": "c",
+    "*.tcc": "c",
+    "type_traits": "c",
+    "scanner.h": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "false",
   "C_Cpp_Runner.cCompilerPath": "gcc",

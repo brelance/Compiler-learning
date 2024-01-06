@@ -10,4 +10,6 @@ void addConst(Chunk* chunk, Value value);
 
 void unitTest1();
 
-void unitTest2();
+// void unitTest2();
+
+// void unitTest3();

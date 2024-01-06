@@ -7,6 +7,7 @@ void addConst(Chunk* chunk, Value value) {
     writeChunk(chunk, constant, 1);
 }
 
+// test debug frame and chunk
 void unitTest1() {
     Chunk test;
     initChunk(&test);
@@ -17,15 +18,22 @@ void unitTest1() {
     disassembleChunk(&test, "Test Chunk");
 };
 
-void unitTest2() {
-    Chunk test;
-    initChunk(&test);
-    addConst(&test, 12);
-    addConst(&test, 13);
+// test interpreter
+// void unitTest2() {
+//     Chunk test;
+//     initChunk(&test);
+//     addConst(&test, 12);
+//     addConst(&test, 13);
 
-    addConst(&test, 10);
-    writeChunk(&test, OP_ADD, 1);
-    writeChunk(&test, OP_MUL, 1);
-    writeChunk(&test, OP_RETURN, 1);
-    interpret(&test);
-};
+//     addConst(&test, 10);
+//     writeChunk(&test, OP_ADD, 1);
+//     writeChunk(&test, OP_MUL, 1);
+//     writeChunk(&test, OP_RETURN, 1);
+//     interpret(&test);
+// };
+
+// test scanner
+
+// void unitTest3() {
+    
+// }
