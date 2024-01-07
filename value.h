@@ -1,6 +1,7 @@
 #ifndef clox_values_h
 #define clox_values_h
 #include "common.h"
+#include <float.h>
 
 
 typedef uint64_t Value;

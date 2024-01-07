@@ -41,7 +41,7 @@ Value pop() {
 
 InterpretResult run() {
     for(;;) {
-        #ifdef DEBUG_TRACE
+        #ifdef DEBUG_TRACE_EXECUTION
             disassembleChunk(vm.chunk, "==Stack-Trace==");
             // printf("==Stack-Trace==");
             for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
@@ -92,6 +92,20 @@ InterpretResult run() {
 
 
 InterpretResult interpret(const char* source) {
-    compile(source);
-    return INTERPRET_OK;
+    Chunk chunk;
+    initVm();
+    initChunk(&chunk);
+
+    if(!compile(source, &chunk)) {
+        freeChunk(&chunk);
+        return INTERPRET_COMPILE_ERROR;
+    }
+
+    vm.chunk = &chunk;
+    vm.ip = vm.chunk->code;
+
+    InterpretResult result = run();
+    
+    freeChunk(&chunk);
+    return result;
 }
