@@ -150,11 +150,11 @@ static Token identifier() {
 }
 
 static Token number() {
-    while(isDigit(peek())) advance;
+    while(isDigit(peek())) { advance(); }
     
     if (peek() == '.' && isDigit(peekNext())) {
         advance();
-        while(isDigit(peek())) advance;
+        while(isDigit(peek())) advance();
     }
 
     return makeToken(TOKEN_NUMBER);
