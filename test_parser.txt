@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_OPERAND 10
+#define MIN_OPERAND 1
+
+int generateRandomNumber(int min, int max) {
+    return min + rand() % (max - min + 1);
+}
+
+char getRandomOperator() {
+    char operators[] = {'+', '-', '*', '/'};
+    int index = rand() % 4;
+    return operators[index];
+}
+
+void generateExpression(int depth) {
+    if (depth == 0) {
+        int operand = generateRandomNumber(MIN_OPERAND, MAX_OPERAND);
+        printf("%d", operand);
+        return;
+    }
+
+    if (rand() % 2 == 0) {
+        int operand = generateRandomNumber(MIN_OPERAND, MAX_OPERAND);
+        printf("%d", operand);
+    } else {
+        printf("(");
+        generateExpression(depth - 1);
+        printf(")");
+    }
+
+    if (depth > 1) {
+        char operator = getRandomOperator();
+        printf(" %c ", operator);
+    }
+}
+
+int main() {
+    srand(time(NULL));
+
+    int numExpressions = 5; // Number of expressions to generate
+    int maxDepth = 3; // Maximum depth of parentheses
+
+    for (int i = 0; i < numExpressions; i++) {
+        int depth = generateRandomNumber(1, maxDepth);
+        generateExpression(depth);
+        printf("\n");
+    }
+
+    return 0;
+}

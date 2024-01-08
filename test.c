@@ -1,22 +1,22 @@
 #include "test.h"
 
 
-void addConst(Chunk* chunk, Value value) {
-    writeChunk(chunk, OP_CONSTANT, 1);
-    int constant = addConstants(chunk, value);
-    writeChunk(chunk, constant, 1);
-}
+// void addConst(Chunk* chunk, Value value) {
+//     writeChunk(chunk, OP_CONSTANT, 1);
+//     int constant = addConstants(chunk, value);
+//     writeChunk(chunk, constant, 1);
+// }
 
 // test debug frame and chunk
-void unitTest1() {
-    Chunk test;
-    initChunk(&test);
-    writeChunk(&test, OP_RETURN, 123);
-    int constant = addConstants(&test, 567);
-    writeChunk(&test, OP_CONSTANT, 123);
-    writeChunk(&test, (uint8_t)constant, 123);
-    disassembleChunk(&test, "Test Chunk");
-};
+// void unitTest1() {
+//     Chunk test;
+//     initChunk(&test);
+//     writeChunk(&test, OP_RETURN, 123);
+//     int constant = addConstants(&test, 567);
+//     writeChunk(&test, OP_CONSTANT, 123);
+//     writeChunk(&test, (uint8_t)constant, 123);
+//     disassembleChunk(&test, "Test Chunk");
+// };
 
 // test interpreter
 // void unitTest2() {

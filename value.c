@@ -27,5 +27,11 @@ void freeValue(ValueArray* array) {
 }
 
 void printValue(Value value) {
-    printf("%" PRIu64 "", value);
+    switch (value.type) {
+        case VAL_BOOL:
+            printf(AS_BOOL(value) ? "true" : "false");
+            break;
+        case VAL_NIL: printf("nil"); break;
+        case VAL_NUMBER: printf("%g", AS_NUMBER(value)); break;
+    }
 }
