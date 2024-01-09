@@ -2,6 +2,8 @@
 #include "memory.h"
 #include <stdio.h>
 #include <inttypes.h>
+#include "object.h"
+#include <string.h>
 
 void initValue(ValueArray* array) {
     array->count = 0;
@@ -26,6 +28,26 @@ void freeValue(ValueArray* array) {
     initValue(array);
 }
 
+bool valueEqual(Value a, Value b) {
+    if (a.type != b.type) return false;
+    
+    switch (a.type)
+    {
+        case VAL_BOOL: return AS_BOOL(a) == AS_BOOL(b);
+        case VAL_NUMBER: return AS_NUMBER(a) == AS_NUMBER(b);
+        case VAL_NIL: return true;
+        case VAL_OBJ: {
+            ObjString* bString = AS_STRING(pop());
+            ObjString* aString = AS_STRING(pop());
+
+            return (aString->length == bString->length &&
+                memcmp(aString->chars, bString->chars,aString->length) == 0)
+        }
+        default:
+            break;
+    }
+}
+
 void printValue(Value value) {
     switch (value.type) {
         case VAL_BOOL:
@@ -33,5 +55,6 @@ void printValue(Value value) {
             break;
         case VAL_NIL: printf("nil"); break;
         case VAL_NUMBER: printf("%g", AS_NUMBER(value)); break;
+        case VAL_OBJ: printObj(value);
     }
 }

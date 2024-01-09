@@ -4,6 +4,8 @@
 #include "compiler.h"
 #include <float.h>
 #include <stdarg.h>
+#include "memory.h"
+#include "object.h"
 
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() \
@@ -32,10 +34,13 @@ static void resetStack() {
 
 void initVm() {
     resetStack(vm);
+    vm.objects = NULL;
 }
 
 
-void freeVm();
+void freeVm() {
+    freeObjects();   
+}
 
 
 void push(Value value) {
@@ -57,17 +62,18 @@ Value peek(int distance) {
     return vm.stackTop[-1 - distance];
 }
 
-bool valueEqual(Value a, Value b) {
-    if (a.type != b.type) return false;
+static void concatenate() {
+    ObjString* bString = pop();
+    ObjString* aString = pop();
     
-    switch (a.type)
-    {
-        case VAL_BOOL: return AS_BOOL(a) == AS_BOOL(b);
-        case VAL_NUMBER: return AS_NUMBER(a) == AS_NUMBER(b);
-        case VAL_NIL: return true;
-        default:
-            break;
-    }
+    int length = aString->length + bString->length + 1;
+    char* chars = ALLOCATE(char, length + 1);
+    memcpy(chars, aString->chars, aString->length);
+    memcpy(chars + aString->length, bString->chars, bString->length);
+    chars[length] = '\0';
+
+    ObjString* string = takeString(chars, length);
+    push(OBJ_VAL(string));
 }
 
 static void runtimeError(const char* format, ...) {
@@ -109,7 +115,15 @@ InterpretResult run() {
         }
 
         case OP_ADD:
-            BINARY_OP(NUMBER_VAL, +);
+            if(IS_STRING(peek(0)) && IS_STRING(peek(1))) {
+                concatenate();
+            } else if(IS_NUMBER(peek(0)) && IS_NUMBER(peek(1))) {
+                BINARY_OP(NUMBER_VAL, +);
+            } else {
+                runtimeError(
+                    "Operands must be two numbers or two strings.");
+                return INTERPRET_RUNTIME_ERROR;
+            }
             break;
 
         case OP_SUB:

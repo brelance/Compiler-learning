@@ -5,6 +5,8 @@
 #include <float.h>
 #include <stdlib.h>
 #include "debug.h"
+#include "object.h"
+
 
 typedef struct
 {
@@ -46,6 +48,8 @@ static void grouping();
 static void unary();
 static void binary();
 static void literal();
+static void string();
+
 
 ParseRule rules[] = {
   [TOKEN_LEFT_PAREN]    = {grouping, NULL,   PREC_CALL},
@@ -68,7 +72,7 @@ ParseRule rules[] = {
   [TOKEN_LESS]          = {NULL,     binary, PREC_COMPARISON},
   [TOKEN_LESS_EQUAL]    = {NULL,     binary, PREC_COMPARISON},
   [TOKEN_IDENTIFIER]    = {NULL,     NULL,   PREC_NONE},
-  [TOKEN_STRING]        = {NULL,     NULL,   PREC_NONE},
+  [TOKEN_STRING]        = {string,     NULL,   PREC_NONE},
   [TOKEN_NUMBER]        = {number,   NULL,   PREC_NONE},
   [TOKEN_AND]           = {NULL,     NULL,   PREC_NONE},
   [TOKEN_CLASS]         = {NULL,     NULL,   PREC_NONE},
@@ -255,6 +259,12 @@ static void binary() {
         case TOKEN_LESS_EQUAL: emitBytes(OP_GREATER, OP_NOT); break;
         default: return; 
     }
+}
+
+static void string() {
+    ObjString* string = copyString(parser.previous + 1, 
+        parser.previous.length - 2);
+    emitConstant(OBJ_VAL(string));
 }
 
 
