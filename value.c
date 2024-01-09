@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include "object.h"
 #include <string.h>
+#include "vm.h"
 
 void initValue(ValueArray* array) {
     array->count = 0;
@@ -41,7 +42,7 @@ bool valueEqual(Value a, Value b) {
             ObjString* aString = AS_STRING(pop());
 
             return (aString->length == bString->length &&
-                memcmp(aString->chars, bString->chars,aString->length) == 0)
+                memcmp(aString->chars, bString->chars,aString->length) == 0);
         }
         default:
             break;

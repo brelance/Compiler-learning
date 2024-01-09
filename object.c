@@ -2,6 +2,7 @@
 #include "memory.h"
 #include <string.h>
 #include "vm.h"
+#include <stdio.h>
 
 
 #define ALLOCATE_OBJ(type, objectType) \
@@ -18,7 +19,7 @@ static Obj* allocateObject(size_t size, ObjType type) {
 
 
 ObjString* allocateString(char* chars, int length) {
-    ObjString* string = allocateObject(ObjString, OBJ_STRING);
+    ObjString* string = (ObjString*)allocateObject(sizeof(ObjString), OBJ_STRING);
     string->chars = chars;
     string->length = length;
     return string;

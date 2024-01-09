@@ -4,6 +4,7 @@
 #include "compiler.h"
 #include <float.h>
 #include <stdarg.h>
+#include <string.h>
 #include "memory.h"
 #include "object.h"
 
@@ -63,14 +64,17 @@ Value peek(int distance) {
 }
 
 static void concatenate() {
-    ObjString* bString = pop();
-    ObjString* aString = pop();
+    ObjString* bString = AS_STRING(peek(0));
+    ObjString* aString = AS_STRING(peek(1));
     
     int length = aString->length + bString->length + 1;
     char* chars = ALLOCATE(char, length + 1);
     memcpy(chars, aString->chars, aString->length);
     memcpy(chars + aString->length, bString->chars, bString->length);
     chars[length] = '\0';
+
+    pop();
+    pop();
 
     ObjString* string = takeString(chars, length);
     push(OBJ_VAL(string));

@@ -2,7 +2,6 @@
 #define clox_values_h
 #include "common.h"
 #include <float.h>
-#include "object.h"
 
 #define BOOL_VAL(value)   ((Value){VAL_BOOL, {.boolean = value}})
 #define NIL_VAL           ((Value){VAL_NIL, {.number = 0}})
@@ -20,8 +19,10 @@
 #define IS_OBJ(value) ((value).type == VAL_OBJ)
 
 
+
 typedef struct Obj Obj;
 typedef struct ObjString ObjString;
+
 
 typedef enum {
     VAL_BOOL,
@@ -50,7 +51,7 @@ typedef struct {
 void initValue(ValueArray* values);
 void writeValue(ValueArray* values, Value byte);
 void freeValue(ValueArray* values);
-bool valueEqual(Value a, Value b)
+bool valueEqual(Value a, Value b);
 void printValue(Value value);
 
 

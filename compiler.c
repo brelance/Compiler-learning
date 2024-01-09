@@ -262,7 +262,7 @@ static void binary() {
 }
 
 static void string() {
-    ObjString* string = copyString(parser.previous + 1, 
+    ObjString* string = copyString(parser.previous.start + 1, 
         parser.previous.length - 2);
     emitConstant(OBJ_VAL(string));
 }
