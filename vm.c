@@ -175,7 +175,11 @@ InterpretResult run() {
         case OP_LESS:
             BINARY_OP(BOOL_VAL, <);
             break;
-    
+
+        case OP_PRINT:
+            printValue(pop());
+            printf("\n");
+            break;
         default:
             break;
         }

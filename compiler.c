@@ -50,6 +50,9 @@ static void binary();
 static void literal();
 static void string();
 
+static void expression();
+static void statement();
+
 
 ParseRule rules[] = {
   [TOKEN_LEFT_PAREN]    = {grouping, NULL,   PREC_CALL},
@@ -200,8 +203,34 @@ static void parsePrecedence(Precedence precedence) {
     
 }
 
+static bool check(TokenType type) {
+    return parser.current.type == type;
+}
+
+static bool match(TokenType type) {
+    if (!check(type)) return false;
+    advance();
+    return true;
+}
+
+static void printStatement() {
+    expression();
+    consume(TOKEN_SEMICOLON, "Expect ';' after value.");
+    emitByte(OP_PRINT);
+}
+
 static void expression() {
     parsePrecedence(PREC_ASSIGNMENT);
+}
+
+static void statement() {
+    if (match(TOKEN_PRINT)) {
+        printStatement();
+    }
+}
+
+static void declaration() {
+    statement();
 }
 
 static void number() {
@@ -267,8 +296,6 @@ static void string() {
     emitConstant(OBJ_VAL(string));
 }
 
-
-
 bool compile(const char* source, Chunk* chunk) {
     int line = -1;
     initScanner(source);
@@ -278,8 +305,16 @@ bool compile(const char* source, Chunk* chunk) {
     compilingChunk = chunk;
 
     advance();
-    expression();
-    consume(TOKEN_EOF, "Expect end of expression.");
+    // expression();
+    // consume(TOKEN_EOF, "Expect end of expression.");
+
+    while (!match(TOKEN_EOF))
+    {
+        declaration();
+    }
+    
+
+    
 
 
     #ifdef DEBUG_PRINT_CODE
