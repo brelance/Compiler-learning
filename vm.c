@@ -36,11 +36,13 @@ static void resetStack() {
 void initVm() {
     resetStack(vm);
     vm.objects = NULL;
+    initTable(&vm.strings);
 }
 
 
 void freeVm() {
-    freeObjects();   
+    freeObjects();
+    freeTable(&vm.strings);
 }
 
 
@@ -67,7 +69,7 @@ static void concatenate() {
     ObjString* bString = AS_STRING(peek(0));
     ObjString* aString = AS_STRING(peek(1));
     
-    int length = aString->length + bString->length + 1;
+    int length = aString->length + bString->length;
     char* chars = ALLOCATE(char, length + 1);
     memcpy(chars, aString->chars, aString->length);
     memcpy(chars + aString->length, bString->chars, bString->length);

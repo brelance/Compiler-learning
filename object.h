@@ -13,7 +13,6 @@
 
 
 
-
 typedef enum {
     OBJ_STRING,
 } ObjType;
@@ -30,6 +29,7 @@ struct ObjString
     Obj obj;
     char* chars;
     int length;
+    uint32_t hash;
 };
 
 static inline bool isObjType(Value value, ObjType type) {

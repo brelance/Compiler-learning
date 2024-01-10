@@ -38,11 +38,12 @@ bool valueEqual(Value a, Value b) {
         case VAL_NUMBER: return AS_NUMBER(a) == AS_NUMBER(b);
         case VAL_NIL: return true;
         case VAL_OBJ: {
-            ObjString* bString = AS_STRING(pop());
-            ObjString* aString = AS_STRING(pop());
+            // ObjString* bString = AS_STRING(pop());
+            // ObjString* aString = AS_STRING(pop());
 
-            return (aString->length == bString->length &&
-                memcmp(aString->chars, bString->chars,aString->length) == 0);
+            // return (aString->length == bString->length &&
+            //     memcmp(aString->chars, bString->chars,aString->length) == 0);
+            return AS_OBJ(a) == AS_OBJ(b);
         }
         default:
             break;
