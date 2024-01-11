@@ -141,7 +141,10 @@ static TokenType identifierType() {
         }
       }
       break;
+    default: return TOKEN_IDENTIFIER;
   }
+  
+  
 
 }
 

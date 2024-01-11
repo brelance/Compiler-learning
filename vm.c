@@ -11,7 +11,8 @@
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() \
     (vm.chunk->constants.values[READ_BYTE()])
-
+#define READ_STRING() \
+    AS_STRING(READ_CONSTANT())
 
 
 #define BINARY_OP(valueType, op) \
@@ -37,12 +38,15 @@ void initVm() {
     resetStack(vm);
     vm.objects = NULL;
     initTable(&vm.strings);
+    initTable(&vm.globals);
+
 }
 
 
 void freeVm() {
     freeObjects();
     freeTable(&vm.strings);
+    freeTable(&vm.globals);
 }
 
 
@@ -110,8 +114,6 @@ InterpretResult run() {
         switch (READ_BYTE())
         {
         case OP_RETURN:
-            printValue(pop());
-            printf("\n");
             return INTERPRET_OK;
         
         case OP_CONSTANT: {
@@ -180,6 +182,29 @@ InterpretResult run() {
             printValue(pop());
             printf("\n");
             break;
+
+        case OP_POP: pop(); break;
+
+        case OP_DEFINE_GLOBAL: {
+            ObjString* name = READ_STRING();
+            tableSet(&vm.globals, name, peek(0));
+            pop();
+            break;
+        }
+        
+        case OP_GET_GLOBAL: {
+            ObjString* name = READ_STRING();
+            Value value;
+
+            if (!tableGet(&vm.globals, name, &value)) {
+                runtimeError("Undefined variable '%s'.", name->chars);
+                return INTERPRET_RUNTIME_ERROR;
+            }
+
+            push(value);
+            break;;
+        }
+
         default:
             break;
         }

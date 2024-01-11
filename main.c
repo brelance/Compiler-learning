@@ -60,16 +60,18 @@ static void runFile(char* path) {
 int main(int argc, char* argv[]) {
     // test scanner
     // runFile("./test_scanner.txt");
+    runFile("./test_variable.txt");
 
-    if (argc == 1) {
-        repl();
-    } else if (argc == 2)
-    {
-        runFile(argv[1]);
-    } else {
-        fprintf(stderr, "Usage: clox [path]\n");
-        exit(64);
-    }
+
+    // if (argc == 1) {
+    //     repl();
+    // } else if (argc == 2)
+    // {
+    //     runFile(argv[1]);
+    // } else {
+    //     fprintf(stderr, "Usage: clox [path]\n");
+    //     exit(64);
+    // }
 
     
     return 1;
