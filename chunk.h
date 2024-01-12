@@ -42,6 +42,4 @@ void freeChunk(Chunk* chunk);
 int addConstants(Chunk* chunk, Value value);
 
 
-
-
 #endif
